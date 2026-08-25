@@ -45,9 +45,11 @@ export class Incidents implements OnInit {
       });
   }
 
-  get selectedIncident(): Incident | undefined {
-    return this.incidents.find(
-      incident => incident.id === this.selectedIncidentId
+  get selectedIncident(): Incident {
+    return (
+      this.incidents.find(
+        incident => incident.id === this.selectedIncidentId
+      ) ?? this.incidents[0]
     );
   }
 
