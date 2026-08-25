@@ -12,7 +12,7 @@ The project combines an **Angular frontend** with a **Java Spring Boot REST API*
 
 ## Live Application
 
-**Frontend:** [Open WealthOps](https://gentle-moss-0104a651e.7.azurestaticapps.net/reports)
+**Frontend:** [Open WealthOps](https://gentle-moss-0104a651e.7.azurestaticapps.net)
 
 **Backend API:** [View Incident API](https://wealthops-api-eqb4h0bva9fue3d5.canadacentral-01.azurewebsites.net/api/incidents)
 
