@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 interface BatchJob {
   id: string;
@@ -17,59 +18,22 @@ interface BatchJob {
   templateUrl: './batch-jobs.html',
   styleUrl: './batch-jobs.scss'
 })
-export class BatchJobs {
+export class BatchJobs implements OnInit {
 
-  jobs: BatchJob[] = [
-    {
-      id: 'JOB-001',
-      name: 'Portfolio Sync',
-      system: 'Portfolio Service',
-      status: 'Success',
-      lastRun: '10:00 AM',
-      duration: '2m 14s',
-      nextRun: '11:00 AM',
-      owner: 'Investment Ops'
-    },
-    {
-      id: 'JOB-002',
-      name: 'Pricing Feed Import',
-      system: 'Pricing Service',
-      status: 'Failed',
-      lastRun: '10:15 AM',
-      duration: '48s',
-      nextRun: '10:45 AM',
-      owner: 'Market Data'
-    },
-    {
-      id: 'JOB-003',
-      name: 'Holdings Reconciliation',
-      system: 'Reconciliation Engine',
-      status: 'Running',
-      lastRun: '10:25 AM',
-      duration: '4m 06s',
-      nextRun: '12:00 PM',
-      owner: 'Operations'
-    },
-    {
-      id: 'JOB-004',
-      name: 'Client Reporting',
-      system: 'Reporting Service',
-      status: 'Success',
-      lastRun: '09:30 AM',
-      duration: '3m 42s',
-      nextRun: '1:30 PM',
-      owner: 'Reporting'
-    },
-    {
-      id: 'JOB-005',
-      name: 'Account Position Update',
-      system: 'Account Service',
-      status: 'Queued',
-      lastRun: '09:00 AM',
-      duration: '1m 56s',
-      nextRun: '10:50 AM',
-      owner: 'Client Data'
-    }
-  ];
+  jobs: BatchJob[] = [];
 
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http
+      .get<BatchJob[]>('http://localhost:8080/api/batch-jobs')
+      .subscribe({
+        next: (data) => {
+          this.jobs = data;
+        },
+        error: (error) => {
+          console.error('Failed to load batch jobs', error);
+        }
+      });
+  }
 }

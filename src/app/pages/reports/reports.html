@@ -1,1 +1,263 @@
-<p>reports works!</p>
+<section class="page">
+
+  <header class="page-header">
+
+    <div>
+      <h1>Reports</h1>
+      <p>
+        Operational insights across incidents, batch processing, and access governance
+      </p>
+    </div>
+
+    <button
+      class="primary-button"
+      (click)="generateReport()"
+    >
+      Generate Report
+    </button>
+
+  </header>
+
+
+  <div class="metric-grid">
+
+    <article class="metric-card">
+      <span>System Availability</span>
+      <strong class="success-text">99.4%</strong>
+      <small>Last 24 hours</small>
+    </article>
+
+    <article class="metric-card">
+      <span>Batch Success Rate</span>
+      <strong>87.5%</strong>
+      <small>28 of 32 successful</small>
+    </article>
+
+    <article class="metric-card">
+      <span>Mean Resolution Time</span>
+      <strong>34m</strong>
+      <small>Incident resolution</small>
+    </article>
+
+    <article class="metric-card">
+      <span>Access Compliance</span>
+      <strong class="success-text">97.2%</strong>
+      <small>Current review cycle</small>
+    </article>
+
+  </div>
+
+
+  <div class="report-grid">
+
+    <article class="panel">
+
+      <div class="panel-header">
+        <div>
+          <h2>Operational Performance</h2>
+          <p>System activity during the last 24 hours</p>
+        </div>
+      </div>
+
+      <div class="performance-list">
+
+        <div class="performance-row">
+
+          <div>
+            <strong>API Availability</strong>
+            <span>Target 99.0%</span>
+          </div>
+
+          <div class="performance-bar">
+            <div class="bar-value availability"></div>
+          </div>
+
+          <strong class="value">99.4%</strong>
+
+        </div>
+
+
+        <div class="performance-row">
+
+          <div>
+            <strong>Batch Job Success</strong>
+            <span>Target 95.0%</span>
+          </div>
+
+          <div class="performance-bar">
+            <div class="bar-value batch"></div>
+          </div>
+
+          <strong class="value warning">87.5%</strong>
+
+        </div>
+
+
+        <div class="performance-row">
+
+          <div>
+            <strong>Incident SLA</strong>
+            <span>Target 95.0%</span>
+          </div>
+
+          <div class="performance-bar">
+            <div class="bar-value incident"></div>
+          </div>
+
+          <strong class="value">96.8%</strong>
+
+        </div>
+
+
+        <div class="performance-row">
+
+          <div>
+            <strong>Access Compliance</strong>
+            <span>Target 95.0%</span>
+          </div>
+
+          <div class="performance-bar">
+            <div class="bar-value access"></div>
+          </div>
+
+          <strong class="value">97.2%</strong>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <article class="panel">
+
+      <div class="panel-header">
+        <div>
+          <h2>Operational Summary</h2>
+          <p>Current platform activity</p>
+        </div>
+      </div>
+
+      <div class="summary-list">
+
+        <div>
+          <span>Services Monitored</span>
+          <strong>18</strong>
+        </div>
+
+        <div>
+          <span>Batch Jobs Executed</span>
+          <strong>32</strong>
+        </div>
+
+        <div>
+          <span>Incidents Created</span>
+          <strong>10</strong>
+        </div>
+
+        <div>
+          <span>Incidents Resolved</span>
+          <strong>7</strong>
+        </div>
+
+        <div>
+          <span>Access Reviews</span>
+          <strong>48</strong>
+        </div>
+
+        <div>
+          <span>Remediation Actions</span>
+          <strong>3</strong>
+        </div>
+
+      </div>
+
+    </article>
+
+  </div>
+
+
+  <article class="panel reports-panel">
+
+    <div class="panel-header">
+
+      <div>
+        <h2>Generated Reports</h2>
+        <p>Operational and compliance reporting</p>
+      </div>
+
+    </div>
+
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Report</th>
+          <th>Type</th>
+          <th>Period</th>
+          <th>Status</th>
+          <th>Generated</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (report of reports; track report.name) {
+
+          <tr>
+
+            <td>
+              <strong>{{ report.name }}</strong>
+            </td>
+
+            <td>{{ report.type }}</td>
+
+            <td>{{ report.period }}</td>
+
+            <td>
+
+              <span
+                class="status-pill"
+                [class.generating]="report.status === 'Generating'"
+              >
+                {{ report.status }}
+              </span>
+
+            </td>
+
+            <td>{{ report.generatedAt }}</td>
+
+            <td>
+
+              @if (report.status === 'Ready') {
+
+                <button
+                  class="text-button"
+                  (click)="downloadReport(report)"
+                >
+                  Download
+                </button>
+
+              }
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </article>
+
+
+  <footer class="prototype-notice">
+    Independent financial-services technology prototype.
+    Not affiliated with or endorsed by RBC.
+  </footer>
+
+</section>
