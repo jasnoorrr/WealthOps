@@ -1,1 +1,566 @@
-<p>access-review works!</p>
+<section class="page">
+
+  <header class="page-header">
+
+    <div>
+      <h1>Access Review</h1>
+      <p>
+        Review privileged access, service accounts, and role recertification
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <select>
+        <option>All Reviews</option>
+        <option>Pending Review</option>
+        <option>Remediation Required</option>
+        <option>Approved</option>
+      </select>
+
+      <button class="primary-button">
+        Start Review
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="metric-grid">
+
+    <article class="metric-card">
+      <span>Pending Reviews</span>
+      <strong>14</strong>
+      <small>Current certification cycle</small>
+    </article>
+
+    <article class="metric-card risk-card">
+      <span>High Risk Access</span>
+      <strong>4</strong>
+      <small>Requires priority review</small>
+    </article>
+
+    <article class="metric-card warning-card">
+      <span>Remediation Required</span>
+      <strong>3</strong>
+      <small>Outstanding access issues</small>
+    </article>
+
+    <article class="metric-card success-card">
+      <span>Compliance Rate</span>
+      <strong>97.2%</strong>
+      <small>Current review cycle</small>
+    </article>
+
+  </div>
+
+
+  <div class="review-layout">
+
+    <article class="panel review-list-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2>Access Review Queue</h2>
+          <p>Accounts requiring certification</p>
+        </div>
+
+        <span class="queue-count">
+          14 Pending
+        </span>
+
+      </div>
+
+
+      <div class="review-list">
+
+        @for (review of reviews; track review.id) {
+
+          <button
+            class="review-row"
+            [class.selected]="selectedReviewId === review.id"
+            (click)="selectReview(review.id)"
+          >
+
+            <div class="review-row-top">
+
+              <span class="review-id">
+                {{ review.id }}
+              </span>
+
+              <span
+                class="risk-pill"
+                [class.high]="review.risk === 'High'"
+                [class.medium]="review.risk === 'Medium'"
+                [class.low]="review.risk === 'Low'"
+              >
+                {{ review.risk }}
+              </span>
+
+            </div>
+
+            <strong>
+              {{ review.account }}
+            </strong>
+
+            <span class="application-name">
+              {{ review.application }}
+            </span>
+
+            <div class="review-row-bottom">
+
+              <span
+                class="review-status"
+                [class.approved]="review.status === 'Approved'"
+                [class.remediation]="review.status === 'Remediation Required'"
+              >
+                {{ review.status }}
+              </span>
+
+              <span>
+                {{ review.lastReviewed }}
+              </span>
+
+            </div>
+
+          </button>
+
+        }
+
+      </div>
+
+    </article>
+
+
+    <article class="panel review-details">
+
+      <div class="details-header">
+
+        <div>
+
+          <div class="review-heading">
+
+            <span class="review-id">
+              {{ selectedReview.id }}
+            </span>
+
+            <span
+              class="risk-pill"
+              [class.high]="selectedReview.risk === 'High'"
+              [class.medium]="selectedReview.risk === 'Medium'"
+              [class.low]="selectedReview.risk === 'Low'"
+            >
+              {{ selectedReview.risk }} Risk
+            </span>
+
+          </div>
+
+          <h2>
+            {{ selectedReview.account }}
+          </h2>
+
+          <p>
+            Access certification review for
+            <strong>{{ selectedReview.application }}</strong>
+          </p>
+
+        </div>
+
+        <button class="secondary-button">
+          View History
+        </button>
+
+      </div>
+
+
+      <div class="details-grid">
+
+        <div>
+          <span>Account Type</span>
+          <strong>{{ selectedReview.accountType }}</strong>
+        </div>
+
+        <div>
+          <span>Application</span>
+          <strong>{{ selectedReview.application }}</strong>
+        </div>
+
+        <div>
+          <span>Current Role</span>
+          <strong>{{ selectedReview.role }}</strong>
+        </div>
+
+        <div>
+          <span>Business Owner</span>
+          <strong>{{ selectedReview.owner }}</strong>
+        </div>
+
+        <div>
+          <span>Status</span>
+          <strong>{{ selectedReview.status }}</strong>
+        </div>
+
+        <div>
+          <span>Last Reviewed</span>
+          <strong>{{ selectedReview.lastReviewed }}</strong>
+        </div>
+
+      </div>
+
+
+      <section class="review-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Access Assessment</h3>
+            <p>Evaluate access against business need and compliance controls</p>
+          </div>
+
+          <span class="assessment-badge">
+            Review Required
+          </span>
+
+        </div>
+
+
+        <div class="assessment-grid">
+
+          <div class="assessment-card">
+
+            <span>Business Justification</span>
+
+            <strong>
+              Required for automated pricing imports
+            </strong>
+
+            <p>
+              Service account supports scheduled market-data ingestion
+              used by portfolio pricing workflows.
+            </p>
+
+          </div>
+
+
+          <div class="assessment-card">
+
+            <span>Privilege Level</span>
+
+            <strong class="warning-text">
+              Elevated
+            </strong>
+
+            <p>
+              Account currently has broader database permissions than
+              required for its documented integration workflow.
+            </p>
+
+          </div>
+
+
+          <div class="assessment-card">
+
+            <span>Password Management</span>
+
+            <strong class="warning-text">
+              Review Required
+            </strong>
+
+            <p>
+              Credential rotation date exceeds the internal target
+              established for non-personal accounts.
+            </p>
+
+          </div>
+
+
+          <div class="assessment-card">
+
+            <span>Ownership</span>
+
+            <strong>
+              Confirmed
+            </strong>
+
+            <p>
+              Market Data Support remains the documented technical
+              owner for this service account.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="review-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Compliance Checks</h3>
+            <p>Control validation for account access</p>
+          </div>
+
+        </div>
+
+
+        <div class="check-list">
+
+          <div class="check-row pass">
+            <span class="check-icon">✓</span>
+
+            <div>
+              <strong>Business owner assigned</strong>
+              <p>Account has a documented accountable owner.</p>
+            </div>
+
+            <span class="check-status">
+              Pass
+            </span>
+          </div>
+
+
+          <div class="check-row pass">
+            <span class="check-icon">✓</span>
+
+            <div>
+              <strong>Business purpose documented</strong>
+              <p>Access requirement is supported by a valid business process.</p>
+            </div>
+
+            <span class="check-status">
+              Pass
+            </span>
+          </div>
+
+
+          <div class="check-row fail">
+            <span class="check-icon">!</span>
+
+            <div>
+              <strong>Least privilege validation</strong>
+              <p>
+                Database permissions exceed the minimum required access.
+              </p>
+            </div>
+
+            <span class="check-status">
+              Action Required
+            </span>
+          </div>
+
+
+          <div class="check-row fail">
+            <span class="check-icon">!</span>
+
+            <div>
+              <strong>Password rotation</strong>
+              <p>
+                Credential age exceeds the configured review threshold.
+              </p>
+            </div>
+
+            <span class="check-status">
+              Action Required
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="review-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Remediation Plan</h3>
+            <p>Required actions before access can be recertified</p>
+          </div>
+
+          <span class="remediation-badge">
+            2 Actions
+          </span>
+
+        </div>
+
+
+        <div class="remediation-list">
+
+          <article>
+
+            <div class="remediation-number">
+              1
+            </div>
+
+            <div>
+
+              <strong>
+                Reduce database privileges
+              </strong>
+
+              <p>
+                Replace elevated database role with a restricted
+                read/write integration role.
+              </p>
+
+              <div class="remediation-meta">
+                <span>Owner: Platform Support</span>
+                <span>Due: Aug 28</span>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <article>
+
+            <div class="remediation-number">
+              2
+            </div>
+
+            <div>
+
+              <strong>
+                Rotate service account credentials
+              </strong>
+
+              <p>
+                Generate a new credential and update the associated
+                application configuration.
+              </p>
+
+              <div class="remediation-meta">
+                <span>Owner: Market Data Support</span>
+                <span>Due: Aug 27</span>
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <section class="review-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Review Activity</h3>
+            <p>Audit trail for access certification</p>
+          </div>
+
+        </div>
+
+
+        <div class="timeline">
+
+          <div class="timeline-item">
+
+            <span class="timeline-dot"></span>
+
+            <div>
+              <strong>Access review initiated</strong>
+              <p>
+                Automated certification cycle created review AR-30018.
+              </p>
+            </div>
+
+            <span class="timeline-time">
+              Aug 23
+            </span>
+
+          </div>
+
+
+          <div class="timeline-item">
+
+            <span class="timeline-dot"></span>
+
+            <div>
+              <strong>Business owner confirmed access requirement</strong>
+              <p>
+                Market Data Support confirmed that the account remains active.
+              </p>
+            </div>
+
+            <span class="timeline-time">
+              Aug 24
+            </span>
+
+          </div>
+
+
+          <div class="timeline-item">
+
+            <span class="timeline-dot active"></span>
+
+            <div>
+              <strong>Remediation required</strong>
+              <p>
+                Excess privileges and credential age require corrective action.
+              </p>
+            </div>
+
+            <span class="timeline-time">
+              Today
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="action-section">
+
+        <div>
+
+          <h3>Certification Decision</h3>
+
+          <p>
+            Approve access, request remediation, or remove access.
+          </p>
+
+        </div>
+
+
+        <div class="action-buttons">
+
+          <button class="danger-button">
+            Remove Access
+          </button>
+
+          <button class="secondary-button">
+            Request Remediation
+          </button>
+
+          <button class="primary-button">
+            Approve Access
+          </button>
+
+        </div>
+
+      </section>
+
+    </article>
+
+  </div>
+
+
+  <footer class="prototype-notice">
+    Independent financial-services technology prototype.
+    Not affiliated with or endorsed by RBC.
+  </footer>
+
+</section>
