@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 interface Incident {
   id: string;
@@ -17,63 +18,40 @@ interface Incident {
   templateUrl: './incidents.html',
   styleUrl: './incidents.scss'
 })
-export class Incidents {
+export class Incidents implements OnInit {
 
-  selectedIncidentId = 'INC-10024';
+  selectedIncidentId = '';
 
-  incidents: Incident[] = [
-    {
-      id: 'INC-10024',
-      title: 'Pricing Data Feed Failure',
-      service: 'Pricing Service',
-      severity: 'High',
-      status: 'In Progress',
-      assignedTo: 'Market Data Support',
-      createdAt: '10:32 AM',
-      description: 'Scheduled pricing import failed after repeated upstream connection timeouts.'
-    },
-    {
-      id: 'INC-10023',
-      title: 'Portfolio Sync Delay',
-      service: 'Portfolio Service',
-      severity: 'Medium',
-      status: 'Investigating',
-      assignedTo: 'Investment Operations',
-      createdAt: '09:15 AM',
-      description: 'Portfolio synchronization exceeded the expected processing window.'
-    },
-    {
-      id: 'INC-10022',
-      title: 'Report Generation Error',
-      service: 'Reporting Service',
-      severity: 'High',
-      status: 'Open',
-      assignedTo: 'Reporting Support',
-      createdAt: '08:47 AM',
-      description: 'Scheduled client report generation terminated before completion.'
-    },
-    {
-      id: 'INC-10021',
-      title: 'Authentication Latency',
-      service: 'Identity Service',
-      severity: 'Low',
-      status: 'Resolved',
-      assignedTo: 'Platform Support',
-      createdAt: '07:26 AM',
-      description: 'Authentication requests experienced elevated response times.'
-    }
-  ];
+  incidents: Incident[] = [];
 
-  get selectedIncident(): Incident {
-    return (
-      this.incidents.find(
-        incident => incident.id === this.selectedIncidentId
-      ) ?? this.incidents[0]
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http
+      .get<Incident[]>(
+        'https://wealthops-api-eqb4h0bva9fue3d5.canadacentral-01.azurewebsites.net/api/incidents'
+      )
+      .subscribe({
+        next: (data) => {
+          this.incidents = data;
+
+          if (data.length > 0) {
+            this.selectedIncidentId = data[0].id;
+          }
+        },
+        error: (error) => {
+          console.error('Failed to load incidents from WealthOps API', error);
+        }
+      });
+  }
+
+  get selectedIncident(): Incident | undefined {
+    return this.incidents.find(
+      incident => incident.id === this.selectedIncidentId
     );
   }
 
   selectIncident(id: string): void {
     this.selectedIncidentId = id;
   }
-
 }
