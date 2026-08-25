@@ -1,0 +1,257 @@
+<section class="page">
+
+  <header class="page-header">
+
+    <div>
+      <h1>Overview</h1>
+      <p>
+        Real-time overview of system health and technology operations
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <select>
+        <option>Last 24 hours</option>
+        <option>Last 7 days</option>
+        <option>Last 30 days</option>
+      </select>
+
+      <button class="refresh-button">
+        Refresh
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="metric-grid">
+
+    <article class="metric-card">
+      <span class="metric-label">System Health</span>
+      <strong class="metric-value healthy">Healthy</strong>
+      <small>All systems operational</small>
+    </article>
+
+    <article class="metric-card">
+      <span class="metric-label">Services</span>
+      <strong class="metric-value">18</strong>
+      <small>17 healthy, 1 degraded</small>
+    </article>
+
+    <article class="metric-card">
+      <span class="metric-label">Batch Jobs</span>
+      <strong class="metric-value">32</strong>
+      <small>28 successful, 4 failed</small>
+    </article>
+
+    <article class="metric-card">
+      <span class="metric-label">Open Incidents</span>
+      <strong class="metric-value">3</strong>
+      <small>2 high, 1 medium</small>
+    </article>
+
+  </div>
+
+
+  <div class="dashboard-grid">
+
+    <article class="panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2>System Health</h2>
+          <p>Availability during the last 24 hours</p>
+        </div>
+
+        <span class="status-badge">
+          99.4% uptime
+        </span>
+
+      </div>
+
+      <div class="health-chart">
+
+        <div class="grid-line line-1"></div>
+        <div class="grid-line line-2"></div>
+        <div class="grid-line line-3"></div>
+
+        <svg
+          class="health-line"
+          viewBox="0 0 800 200"
+          preserveAspectRatio="none"
+        >
+          <polyline
+            points="
+              0,115
+              80,110
+              160,118
+              240,85
+              320,92
+              400,82
+              480,95
+              560,72
+              640,77
+              720,60
+              800,67
+            "
+          />
+        </svg>
+
+        <div class="chart-labels">
+          <span>12 AM</span>
+          <span>4 AM</span>
+          <span>8 AM</span>
+          <span>12 PM</span>
+          <span>4 PM</span>
+          <span>8 PM</span>
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <article class="panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2>Incident Severity</h2>
+          <p>Current open incidents</p>
+        </div>
+
+      </div>
+
+      <div class="severity-content">
+
+        <div class="severity-circle">
+
+          <div class="severity-inner">
+            <strong>3</strong>
+            <span>Open</span>
+          </div>
+
+        </div>
+
+        <div class="severity-list">
+
+          <div>
+            <span class="dot high"></span>
+            <span>High</span>
+            <strong>2</strong>
+          </div>
+
+          <div>
+            <span class="dot medium"></span>
+            <span>Medium</span>
+            <strong>1</strong>
+          </div>
+
+          <div>
+            <span class="dot low"></span>
+            <span>Low</span>
+            <strong>0</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </div>
+
+
+  <article class="panel incidents-panel">
+
+    <div class="panel-header">
+
+      <div>
+        <h2>Recent Incidents</h2>
+        <p>Incidents requiring investigation</p>
+      </div>
+
+      <button class="text-button">
+        View all incidents
+      </button>
+
+    </div>
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Incident</th>
+            <th>Service</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (incident of incidents; track incident.id) {
+
+            <tr>
+
+              <td class="incident-id">
+                {{ incident.id }}
+              </td>
+
+              <td>
+                {{ incident.title }}
+              </td>
+
+              <td>
+                {{ incident.service }}
+              </td>
+
+              <td>
+
+                <span
+                  class="pill"
+                  [class.high]="incident.severity === 'High'"
+                  [class.medium]="incident.severity === 'Medium'"
+                  [class.low]="incident.severity === 'Low'"
+                >
+                  {{ incident.severity }}
+                </span>
+
+              </td>
+
+              <td>
+                <span class="status-pill">
+                  {{ incident.status }}
+                </span>
+              </td>
+
+              <td>
+                {{ incident.createdAt }}
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </article>
+
+
+  <footer class="prototype-notice">
+    Independent financial-services technology prototype.
+    Not affiliated with or endorsed by RBC.
+  </footer>
+
+</section>

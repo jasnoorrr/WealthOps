@@ -1,0 +1,279 @@
+<section class="page">
+
+  <header class="page-header">
+
+    <div>
+      <h1>Batch Jobs</h1>
+      <p>
+        Monitor scheduled data integration and operational processing jobs
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <select>
+        <option>All Systems</option>
+        <option>Portfolio Service</option>
+        <option>Pricing Service</option>
+        <option>Reporting Service</option>
+      </select>
+
+      <button class="primary-button">
+        Run Job
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="metric-grid">
+
+    <article class="metric-card">
+      <span class="metric-label">Total Jobs</span>
+      <strong>32</strong>
+      <small>Scheduled today</small>
+    </article>
+
+    <article class="metric-card success-card">
+      <span class="metric-label">Successful</span>
+      <strong>28</strong>
+      <small>87.5% success rate</small>
+    </article>
+
+    <article class="metric-card failed-card">
+      <span class="metric-label">Failed</span>
+      <strong>4</strong>
+      <small>Requires investigation</small>
+    </article>
+
+    <article class="metric-card">
+      <span class="metric-label">Average Duration</span>
+      <strong>2m 46s</strong>
+      <small>Across all jobs</small>
+    </article>
+
+  </div>
+
+
+  <div class="content-grid">
+
+    <article class="panel jobs-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2>Job Monitor</h2>
+          <p>
+            Current execution status and upcoming schedules
+          </p>
+        </div>
+
+        <div class="filters">
+
+          <button class="filter active">
+            All
+          </button>
+
+          <button class="filter">
+            Failed
+          </button>
+
+          <button class="filter">
+            Running
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Job</th>
+              <th>System</th>
+              <th>Status</th>
+              <th>Last Run</th>
+              <th>Duration</th>
+              <th>Next Run</th>
+              <th>Owner</th>
+              <th></th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            @for (job of jobs; track job.id) {
+
+              <tr>
+
+                <td>
+
+                  <div class="job-name">
+                    <strong>
+                      {{ job.name }}
+                    </strong>
+
+                    <span>
+                      {{ job.id }}
+                    </span>
+                  </div>
+
+                </td>
+
+                <td>
+                  {{ job.system }}
+                </td>
+
+                <td>
+
+                  <span
+                    class="status-pill"
+                    [class.success]="job.status === 'Success'"
+                    [class.failed]="job.status === 'Failed'"
+                    [class.running]="job.status === 'Running'"
+                    [class.queued]="job.status === 'Queued'"
+                  >
+                    {{ job.status }}
+                  </span>
+
+                </td>
+
+                <td>
+                  {{ job.lastRun }}
+                </td>
+
+                <td>
+                  {{ job.duration }}
+                </td>
+
+                <td>
+                  {{ job.nextRun }}
+                </td>
+
+                <td>
+                  {{ job.owner }}
+                </td>
+
+                <td>
+                  <button class="row-action">
+                    View
+                  </button>
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </article>
+
+
+    <aside class="panel failure-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2>Failed Job</h2>
+          <p>
+            Latest operational failure
+          </p>
+        </div>
+
+        <span class="severity">
+          HIGH
+        </span>
+
+      </div>
+
+
+      <div class="failure-section">
+
+        <span class="label">
+          Job
+        </span>
+
+        <strong>
+          Pricing Feed Import
+        </strong>
+
+      </div>
+
+
+      <div class="failure-section">
+
+        <span class="label">
+          Failure Reason
+        </span>
+
+        <p>
+          Upstream market-data endpoint timed out after
+          three connection attempts.
+        </p>
+
+      </div>
+
+
+      <div class="failure-section">
+
+        <span class="label">
+          Error Code
+        </span>
+
+        <code>
+          MARKET_DATA_TIMEOUT
+        </code>
+
+      </div>
+
+
+      <div class="failure-section">
+
+        <span class="label">
+          Recommended Investigation
+        </span>
+
+        <ul>
+          <li>Validate upstream endpoint availability</li>
+          <li>Review application logs</li>
+          <li>Confirm authentication token validity</li>
+          <li>Retry failed execution</li>
+        </ul>
+
+      </div>
+
+
+      <div class="failure-actions">
+
+        <button class="secondary-button">
+          View Logs
+        </button>
+
+        <button class="primary-button">
+          Retry Job
+        </button>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <footer class="prototype-notice">
+    Independent financial-services technology prototype.
+    Not affiliated with or endorsed by RBC.
+  </footer>
+
+</section>

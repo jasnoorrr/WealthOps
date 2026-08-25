@@ -1,0 +1,55 @@
+<aside class="sidebar">
+
+  <div class="brand">
+
+    <div class="brand-mark">
+      W
+    </div>
+
+    <div class="brand-text">
+      <h1>WealthOps</h1>
+      <span>Technology Operations</span>
+    </div>
+
+  </div>
+
+
+  <nav class="navigation">
+
+    @for (item of navigationItems; track item.route) {
+
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+
+        <span class="nav-icon">
+          {{ item.icon }}
+        </span>
+
+        <span>
+          {{ item.label }}
+        </span>
+
+      </a>
+
+    }
+
+  </nav>
+
+
+  <div class="sidebar-footer">
+
+    <div class="avatar">
+      JB
+    </div>
+
+    <div class="user-details">
+      <strong>Jasnoor Batra</strong>
+      <span>Developer</span>
+    </div>
+
+  </div>
+
+</aside>
