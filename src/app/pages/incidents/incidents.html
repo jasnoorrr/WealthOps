@@ -1,1 +1,423 @@
-<p>incidents works!</p>
+<section class="page">
+
+  <header class="page-header">
+
+    <div>
+      <h1>Incident Management</h1>
+      <p>
+        Investigate, document, and resolve technology incidents
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <select>
+        <option>All Incidents</option>
+        <option>Open</option>
+        <option>Investigating</option>
+        <option>Resolved</option>
+      </select>
+
+      <button class="primary-button">
+        Create Incident
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- METRICS -->
+
+  <div class="metric-grid">
+
+    <article class="metric-card">
+      <span>Open Incidents</span>
+      <strong>3</strong>
+      <small>Requires attention</small>
+    </article>
+
+    <article class="metric-card high-card">
+      <span>High Severity</span>
+      <strong>2</strong>
+      <small>Priority investigation</small>
+    </article>
+
+    <article class="metric-card">
+      <span>Mean Resolution Time</span>
+      <strong>34m</strong>
+      <small>Last 24 hours</small>
+    </article>
+
+    <article class="metric-card resolved-card">
+      <span>Resolved Today</span>
+      <strong>7</strong>
+      <small>87% within target</small>
+    </article>
+
+  </div>
+
+
+  <div class="incident-layout">
+
+    <!-- INCIDENT LIST -->
+
+    <article class="panel incident-list-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2>Incident Queue</h2>
+          <p>Active and recently resolved incidents</p>
+        </div>
+
+      </div>
+
+
+      <div class="incident-list">
+
+        @for (incident of incidents; track incident.id) {
+
+          <button
+            class="incident-row"
+            [class.selected]="selectedIncidentId === incident.id"
+            (click)="selectIncident(incident.id)"
+          >
+
+            <div class="incident-row-top">
+
+              <span class="incident-id">
+                {{ incident.id }}
+              </span>
+
+              <span
+                class="severity-pill"
+                [class.critical]="incident.severity === 'Critical'"
+                [class.high]="incident.severity === 'High'"
+                [class.medium]="incident.severity === 'Medium'"
+                [class.low]="incident.severity === 'Low'"
+              >
+                {{ incident.severity }}
+              </span>
+
+            </div>
+
+            <strong class="incident-title">
+              {{ incident.title }}
+            </strong>
+
+            <span class="incident-service">
+              {{ incident.service }}
+            </span>
+
+            <div class="incident-row-bottom">
+
+              <span
+                class="status"
+                [class.resolved]="incident.status === 'Resolved'"
+              >
+                {{ incident.status }}
+              </span>
+
+              <span>
+                {{ incident.createdAt }}
+              </span>
+
+            </div>
+
+          </button>
+
+        }
+
+      </div>
+
+    </article>
+
+
+    <!-- INVESTIGATION PANEL -->
+
+    <article class="panel investigation-panel">
+
+      <div class="investigation-header">
+
+        <div>
+
+          <div class="incident-heading">
+
+            <span class="incident-id">
+              {{ selectedIncident.id }}
+            </span>
+
+            <span
+              class="severity-pill"
+              [class.high]="selectedIncident.severity === 'High'"
+              [class.medium]="selectedIncident.severity === 'Medium'"
+              [class.low]="selectedIncident.severity === 'Low'"
+            >
+              {{ selectedIncident.severity }}
+            </span>
+
+          </div>
+
+          <h2>
+            {{ selectedIncident.title }}
+          </h2>
+
+          <p>
+            {{ selectedIncident.description }}
+          </p>
+
+        </div>
+
+        <button class="secondary-button">
+          Edit Incident
+        </button>
+
+      </div>
+
+
+      <div class="incident-details">
+
+        <div>
+          <span>Service</span>
+          <strong>{{ selectedIncident.service }}</strong>
+        </div>
+
+        <div>
+          <span>Status</span>
+          <strong>{{ selectedIncident.status }}</strong>
+        </div>
+
+        <div>
+          <span>Assigned Team</span>
+          <strong>{{ selectedIncident.assignedTo }}</strong>
+        </div>
+
+        <div>
+          <span>Created</span>
+          <strong>{{ selectedIncident.createdAt }}</strong>
+        </div>
+
+      </div>
+
+
+      <!-- INVESTIGATION -->
+
+      <section class="investigation-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Investigation</h3>
+            <p>Operational troubleshooting and diagnostic information</p>
+          </div>
+
+          <span class="investigating-badge">
+            Investigation Active
+          </span>
+
+        </div>
+
+
+        <div class="investigation-grid">
+
+          <div class="info-box">
+
+            <span class="info-label">
+              Detected Error
+            </span>
+
+            <code>
+              MARKET_DATA_TIMEOUT
+            </code>
+
+            <p>
+              Upstream market-data endpoint did not respond within
+              the configured timeout threshold.
+            </p>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <span class="info-label">
+              Impact
+            </span>
+
+            <strong>
+              Pricing data delayed
+            </strong>
+
+            <p>
+              Latest market prices are unavailable to downstream
+              portfolio processing until synchronization succeeds.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- LOGS -->
+
+      <section class="investigation-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Application Logs</h3>
+            <p>Latest diagnostic events</p>
+          </div>
+
+          <button class="text-button">
+            View Full Logs
+          </button>
+
+        </div>
+
+
+        <div class="log-window">
+
+          <div>
+            <span class="timestamp">10:31:42</span>
+            <span class="info">INFO</span>
+            Starting scheduled pricing feed import
+          </div>
+
+          <div>
+            <span class="timestamp">10:31:44</span>
+            <span class="info">INFO</span>
+            Connecting to upstream market-data service
+          </div>
+
+          <div>
+            <span class="timestamp">10:32:14</span>
+            <span class="warn">WARN</span>
+            Connection attempt 1 timed out
+          </div>
+
+          <div>
+            <span class="timestamp">10:32:45</span>
+            <span class="warn">WARN</span>
+            Connection attempt 2 timed out
+          </div>
+
+          <div>
+            <span class="timestamp">10:33:16</span>
+            <span class="error">ERROR</span>
+            MARKET_DATA_TIMEOUT after 3 attempts
+          </div>
+
+          <div>
+            <span class="timestamp">10:33:16</span>
+            <span class="error">ERROR</span>
+            Pricing feed batch execution marked FAILED
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ROOT CAUSE -->
+
+      <section class="investigation-section">
+
+        <div class="section-heading">
+          <div>
+            <h3>Root Cause Analysis</h3>
+            <p>Current investigation findings</p>
+          </div>
+        </div>
+
+
+        <div class="root-cause">
+
+          <div class="root-step completed">
+            <div class="step-number">1</div>
+
+            <div>
+              <strong>Application health verified</strong>
+              <p>
+                Pricing service is operational and accepting requests.
+              </p>
+            </div>
+          </div>
+
+
+          <div class="root-step completed">
+            <div class="step-number">2</div>
+
+            <div>
+              <strong>Authentication validated</strong>
+              <p>
+                Service credentials and access token remain valid.
+              </p>
+            </div>
+          </div>
+
+
+          <div class="root-step active">
+            <div class="step-number">3</div>
+
+            <div>
+              <strong>Upstream dependency identified</strong>
+              <p>
+                Market-data endpoint is experiencing elevated latency
+                and repeated connection timeouts.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ACTIONS -->
+
+      <section class="action-section">
+
+        <div>
+
+          <h3>Remediation Actions</h3>
+
+          <p>
+            Retry the failed workload or escalate the issue
+            to the appropriate support team.
+          </p>
+
+        </div>
+
+        <div class="action-buttons">
+
+          <button class="secondary-button">
+            Create Service Ticket
+          </button>
+
+          <button class="secondary-button">
+            Escalate
+          </button>
+
+          <button class="primary-button">
+            Retry Failed Job
+          </button>
+
+        </div>
+
+      </section>
+
+    </article>
+
+  </div>
+
+
+  <footer class="prototype-notice">
+    Independent financial-services technology prototype.
+    Not affiliated with or endorsed by RBC.
+  </footer>
+
+</section>

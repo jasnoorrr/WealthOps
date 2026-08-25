@@ -1,1 +1,495 @@
-<p>service-tickets works!</p>
+<section class="page">
+
+  <header class="page-header">
+
+    <div>
+      <h1>Service Tickets</h1>
+      <p>
+        Track support requests, assignments, escalations, and remediation
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <select>
+        <option>All Tickets</option>
+        <option>Open</option>
+        <option>In Progress</option>
+        <option>Pending</option>
+        <option>Resolved</option>
+      </select>
+
+      <button class="primary-button">
+        + New Ticket
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- METRICS -->
+
+  <div class="metric-grid">
+
+    <article class="metric-card">
+      <span>Open Tickets</span>
+      <strong>12</strong>
+      <small>Across support teams</small>
+    </article>
+
+    <article class="metric-card priority-card">
+      <span>Priority Tickets</span>
+      <strong>3</strong>
+      <small>P1 and P2 requests</small>
+    </article>
+
+    <article class="metric-card">
+      <span>Average Response</span>
+      <strong>11m</strong>
+      <small>Last 24 hours</small>
+    </article>
+
+    <article class="metric-card success-card">
+      <span>SLA Compliance</span>
+      <strong>96.8%</strong>
+      <small>30-day performance</small>
+    </article>
+
+  </div>
+
+
+  <!-- MAIN -->
+
+  <div class="ticket-layout">
+
+    <!-- TICKET QUEUE -->
+
+    <article class="panel queue-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2>Ticket Queue</h2>
+          <p>Active support requests</p>
+        </div>
+
+        <span class="queue-count">
+          12 Open
+        </span>
+
+      </div>
+
+
+      <div class="ticket-list">
+
+        @for (ticket of tickets; track ticket.id) {
+
+          <button
+            class="ticket-row"
+            [class.selected]="selectedTicketId === ticket.id"
+            (click)="selectTicket(ticket.id)"
+          >
+
+            <div class="ticket-top">
+
+              <span class="ticket-id">
+                {{ ticket.id }}
+              </span>
+
+              <span
+                class="priority"
+                [class.p1]="ticket.priority === 'P1'"
+                [class.p2]="ticket.priority === 'P2'"
+                [class.p3]="ticket.priority === 'P3'"
+              >
+                {{ ticket.priority }}
+              </span>
+
+            </div>
+
+            <strong>
+              {{ ticket.title }}
+            </strong>
+
+            <span class="ticket-group">
+              {{ ticket.assignmentGroup }}
+            </span>
+
+            <div class="ticket-bottom">
+
+              <span
+                class="ticket-status"
+                [class.resolved]="ticket.status === 'Resolved'"
+              >
+                {{ ticket.status }}
+              </span>
+
+              <span>
+                {{ ticket.createdAt }}
+              </span>
+
+            </div>
+
+          </button>
+
+        }
+
+      </div>
+
+    </article>
+
+
+    <!-- TICKET DETAILS -->
+
+    <article class="panel ticket-details">
+
+      <div class="details-header">
+
+        <div>
+
+          <div class="ticket-heading">
+
+            <span class="ticket-id">
+              {{ selectedTicket.id }}
+            </span>
+
+            <span
+              class="priority"
+              [class.p1]="selectedTicket.priority === 'P1'"
+              [class.p2]="selectedTicket.priority === 'P2'"
+              [class.p3]="selectedTicket.priority === 'P3'"
+            >
+              {{ selectedTicket.priority }}
+            </span>
+
+          </div>
+
+          <h2>
+            {{ selectedTicket.title }}
+          </h2>
+
+          <p>
+            Support request associated with
+            <strong>{{ selectedTicket.linkedIncident }}</strong>
+          </p>
+
+        </div>
+
+        <button class="secondary-button">
+          Edit Ticket
+        </button>
+
+      </div>
+
+
+      <!-- BASIC DETAILS -->
+
+      <div class="details-grid">
+
+        <div>
+          <span>Status</span>
+          <strong>{{ selectedTicket.status }}</strong>
+        </div>
+
+        <div>
+          <span>Category</span>
+          <strong>{{ selectedTicket.category }}</strong>
+        </div>
+
+        <div>
+          <span>Assignment Group</span>
+          <strong>{{ selectedTicket.assignmentGroup }}</strong>
+        </div>
+
+        <div>
+          <span>Assignee</span>
+          <strong>{{ selectedTicket.assignee }}</strong>
+        </div>
+
+        <div>
+          <span>Linked Incident</span>
+          <strong class="link-value">
+            {{ selectedTicket.linkedIncident }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Created</span>
+          <strong>{{ selectedTicket.createdAt }}</strong>
+        </div>
+
+      </div>
+
+
+      <!-- SLA -->
+
+      <section class="ticket-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Service Level Agreement</h3>
+            <p>Response and resolution target</p>
+          </div>
+
+          <span class="sla-status">
+            On Track
+          </span>
+
+        </div>
+
+
+        <div class="sla-container">
+
+          <div class="sla-top">
+
+            <span>
+              Resolution SLA
+            </span>
+
+            <strong>
+              {{ selectedTicket.sla }}
+            </strong>
+
+          </div>
+
+          <div class="progress-track">
+            <div class="progress-value"></div>
+          </div>
+
+          <div class="sla-labels">
+            <span>Created</span>
+            <span>75% consumed</span>
+            <span>Target</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- DESCRIPTION -->
+
+      <section class="ticket-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Request Details</h3>
+            <p>Issue description and investigation context</p>
+          </div>
+
+        </div>
+
+
+        <div class="description-box">
+
+          <p>
+            Investigate repeated connection timeouts between the
+            Pricing Service and the upstream market-data provider.
+            The scheduled pricing import failed after three retry
+            attempts and generated incident INC-10024.
+          </p>
+
+          <div class="detail-tags">
+
+            <span>Pricing Service</span>
+            <span>Market Data</span>
+            <span>Batch Processing</span>
+            <span>Production Support</span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ACTIVITY -->
+
+      <section class="ticket-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Activity</h3>
+            <p>Ticket history and support actions</p>
+          </div>
+
+          <button class="text-button">
+            Add Work Note
+          </button>
+
+        </div>
+
+
+        <div class="timeline">
+
+          <div class="timeline-item">
+
+            <div class="timeline-marker"></div>
+
+            <div>
+
+              <div class="timeline-heading">
+                <strong>Ticket assigned to Market Data Support</strong>
+                <span>10:38 AM</span>
+              </div>
+
+              <p>
+                Routing rules identified Market Data Support as the
+                appropriate support group.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-item">
+
+            <div class="timeline-marker"></div>
+
+            <div>
+
+              <div class="timeline-heading">
+                <strong>Investigation started</strong>
+                <span>10:41 AM</span>
+              </div>
+
+              <p>
+                Application logs and upstream dependency health
+                checks are being reviewed.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="timeline-item">
+
+            <div class="timeline-marker active"></div>
+
+            <div>
+
+              <div class="timeline-heading">
+                <strong>Upstream latency identified</strong>
+                <span>10:52 AM</span>
+              </div>
+
+              <p>
+                Elevated response times detected from the external
+                market-data endpoint.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- KNOWLEDGE -->
+
+      <section class="ticket-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h3>Related Knowledge</h3>
+            <p>Documentation available for troubleshooting</p>
+          </div>
+
+          <button class="text-button">
+            Browse Knowledge
+          </button>
+
+        </div>
+
+
+        <div class="knowledge-grid">
+
+          <div class="knowledge-card">
+
+            <span>KB-1042</span>
+
+            <strong>
+              Market Data Feed Troubleshooting
+            </strong>
+
+            <p>
+              Diagnostic procedure for connection failures and
+              upstream data-provider outages.
+            </p>
+
+          </div>
+
+
+          <div class="knowledge-card">
+
+            <span>KB-0987</span>
+
+            <strong>
+              Batch Job Recovery Procedure
+            </strong>
+
+            <p>
+              Standard recovery workflow for failed scheduled
+              processing jobs.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ACTIONS -->
+
+      <section class="action-section">
+
+        <div>
+
+          <h3>Ticket Actions</h3>
+
+          <p>
+            Update, escalate, or resolve this support request.
+          </p>
+
+        </div>
+
+
+        <div class="action-buttons">
+
+          <button class="secondary-button">
+            Reassign
+          </button>
+
+          <button class="secondary-button">
+            Escalate
+          </button>
+
+          <button class="primary-button">
+            Resolve Ticket
+          </button>
+
+        </div>
+
+      </section>
+
+    </article>
+
+  </div>
+
+
+  <footer class="prototype-notice">
+    Independent financial-services technology prototype.
+    Not affiliated with or endorsed by RBC.
+  </footer>
+
+</section>
