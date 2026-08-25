@@ -1,6 +1,10 @@
 {
   "name": "wealthops-frontend",
   "version": "0.0.0",
+  "engines": {
+  "node": "24.15.0",
+  "npm": ">=10"
+},
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
